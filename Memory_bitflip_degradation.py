@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 
 n_neurons = 100
-n_patterns = 3
+n_patterns = 10
 steps = 5
 n_trials = 50
 degradation_levels = np.arange(0.0, 0.9, 0.1)  # Adjusted for full range
