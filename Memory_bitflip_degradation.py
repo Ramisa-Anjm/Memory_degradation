@@ -1,4 +1,3 @@
-print("hello dawg")
 import numpy as np
 import pandas as pd
 
@@ -25,6 +24,7 @@ for deg_level in degradation_levels:
         w = np.zeros((n_neurons, n_neurons))
         for p in patterns:
             w += np.outer(p, p)
+        w /= n_neurons
         np.fill_diagonal(w, 0)
 
         # Degrade the first pattern
@@ -53,4 +53,4 @@ for deg_level in degradation_levels:
 
 # Save to CSV
 df = pd.DataFrame(records)
-df.to_csv("hopfield_simulation_results.csv", index=False)
+df.to_csv("hopfield_bitflip_results.csv", index=False)
