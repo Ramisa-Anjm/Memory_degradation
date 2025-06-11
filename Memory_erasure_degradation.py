@@ -11,11 +11,10 @@ records = []
 def hopfield(state, w, steps):
     for _ in range(steps):
         state = np.sign(w @ state)
-        state[state == 0] = 1
     return state
 
 for deg_level in degradation_levels:
-    n_flip = int(deg_level * n_neurons)
+    n_erased = int(deg_level * n_neurons)
     for trial in range(n_trials):
         # Generate random patterns
         patterns = np.random.choice([-1, 1], size=(n_patterns, n_neurons))
@@ -30,9 +29,9 @@ for deg_level in degradation_levels:
         # Degrade the first pattern
         original = patterns[0].copy()
         degraded = original.copy()
-        if n_flip > 0:
-            flip_idx = np.random.choice(n_neurons, n_flip, replace=False)
-            degraded[flip_idx] *= -1
+        if n_erased > 0:
+            flip_idx = np.random.choice(n_neurons, n_erased, replace=False)
+            degraded[flip_idx] = 0
 
         # Recover the degraded pattern
         recovered = hopfield(degraded.copy(), w, steps)
@@ -46,11 +45,11 @@ for deg_level in degradation_levels:
             "n_neurons": n_neurons,
             "n_patterns": n_patterns,
             "degradation_level": deg_level,
-            "n_bits_flipped": n_flip,
+            "n_bits_erased": n_erased,
             "accuracy_degraded": acc_degraded,
             "accuracy_recovered": acc_recovered
         })
 
 # Save to CSV
 df = pd.DataFrame(records)
-df.to_csv("hopfield_bitflip_results.csv", index=False) 
+df.to_csv("hopfield_erased_results.csv", index=False) 
